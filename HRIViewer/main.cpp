@@ -23,14 +23,24 @@ int main(int argc, char* argv[]) {
 			}
 
 		if (isHRI) {
+			
 			for (int i = 0; i < HRI.size(); i++) {
-				
-				if (HRI[i].find("!rgb") != std::string::npos) {
+
+				std::string ActiveHRI = HRI[i];
+
+				// Test if pixels are in RGB or Hex format
+				if (ActiveHRI.find("!rgb") != std::string::npos) {
 					ctype = ColourType::RGB;
 					std::cout << "ColourType is: " << "RGB \n";
-				} else 	if (HRI[i].find("!hex") != std::string::npos) {
+				} else 	if (ActiveHRI.find("!hex") != std::string::npos) {
 					ctype = ColourType::HEX;
 					std::cout << "ColourType is: " << "Hex \n";
+				}
+
+				//Find the size of the image
+				if (ActiveHRI.find("!{") != std::string::npos) {
+					std::string Tempsize = ActiveHRI.substr(ActiveHRI.find("!{")+2, ActiveHRI.find("}")-2);
+					std::cout << Tempsize << std::endl;
 				}
 
 
