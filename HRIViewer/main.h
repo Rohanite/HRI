@@ -6,7 +6,10 @@
 #include <string>
 #include <vector>
 
+#include "ColourType.h"
+
 bool isHRI = false;
+ColourType ctype = ColourType::NON;
 
 class main
 {
