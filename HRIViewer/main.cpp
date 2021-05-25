@@ -57,9 +57,15 @@ int main(int argc, char* argv[]) {
 
 
 		
-		}
+			}
+
 			if (SizeX == NULL || SizeY == NULL) {
 				std::cout << "FATAL ERROR: Size not defined! Exiting Program... \n";
+				return 0;
+			}
+			if (SizeX > 300 || SizeY > 300) {
+				std::cout << "FATAL ERROR: Image is too large! Max Dimensions are 300x300! Exiting Program... \n";
+				return 0;
 			}
 			if (ctype == ColourType::NON) {
 				std::cout << "FATAL ERROR: No ColouType Defined! Exiting Program... \n";

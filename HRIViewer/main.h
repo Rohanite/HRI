@@ -11,6 +11,7 @@
 bool isHRI = false;
 ColourType ctype = ColourType::NON;
 int SizeX, SizeY;
+std::vector<int> pixels;
 
 class main
 {
