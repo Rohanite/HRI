@@ -5,6 +5,7 @@
 #include <raylib.h>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "ColourType.h"
 

@@ -55,7 +55,17 @@ int main(int argc, char* argv[]) {
 					}
 				}
 
-
+				int OpLoc = -1;
+				int CpLoc = -1;
+				if (SizeX != NULL || SizeY != NULL) {
+					for (int i2 = 0; i2 < std::count(ActiveHRI.begin(), ActiveHRI.end(), '{'); i2++) {
+						
+						OpLoc = ActiveHRI.find("{", i2);
+						CpLoc = ActiveHRI.find("}", i2);
+						std::string TempPix = ActiveHRI.substr(OpLoc, CpLoc+1);
+						std::cout << TempPix << " " << CpLoc << std::endl;
+					}
+				}
 		
 			}
 
