@@ -37,18 +37,35 @@ int main(int argc, char* argv[]) {
 					std::cout << "ColourType is: " << "Hex \n";
 				}
 
+
 				//Find the size of the image
 				if (ActiveHRI.find("!{") != std::string::npos) {
 					std::string Tempsize = ActiveHRI.substr(ActiveHRI.find("!{")+2, ActiveHRI.find("}")-2);
 					std::cout << Tempsize << std::endl;
+					std::string tempSizeX = Tempsize.substr(0, Tempsize.find(","));
+					std::cout << tempSizeX << "\n";
+					std::string tempSizeY = Tempsize.substr(Tempsize.find(",")+2);
+					std::cout << tempSizeY << "\n";
+					try {
+						SizeX = std::stoi(tempSizeX);
+						SizeY = std::stoi(tempSizeY);
+					}
+					catch (...) {
+						std::cout << "FATAL ERROR: Found a non-number in the size definition! \n";
+					}
 				}
 
 
-		//REMINDER: TEST IF COLOURTYPE VAIRABLE IS DEFINED
+		
 		}
+			if (SizeX == NULL || SizeY == NULL) {
+				std::cout << "FATAL ERROR: Size not defined! Exiting Program... \n";
+			}
 			if (ctype == ColourType::NON) {
 				std::cout << "FATAL ERROR: No ColouType Defined! Exiting Program... \n";
+				return 0;
 			}
+
 		}
 
 

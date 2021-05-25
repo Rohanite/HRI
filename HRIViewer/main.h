@@ -10,6 +10,7 @@
 
 bool isHRI = false;
 ColourType ctype = ColourType::NON;
+int SizeX, SizeY;
 
 class main
 {
