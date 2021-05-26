@@ -14,7 +14,9 @@ ColourType ctype = ColourType::NON;
 int SizeX = NULL, SizeY = NULL;
 std::vector<int> pixels;
 
-class main
+class Main
 {
+public:
+	static int nthOccurrence(const std::string& str, const std::string& findMe, int nth);
 };
 

@@ -52,16 +52,11 @@ int main(int argc, char* argv[]) {
 
 						if (ctype == ColourType::RGB) {
 							std::string r, g, b, a;
-							int rloc, gloc, bloc, aloc;
-							rloc = TempPix.find(",");
-							r = TempPix.substr(0, rloc);
-							std::cout << r << std::endl;
-							gloc = TempPix.find(",", rloc + 1);
-							g = TempPix.substr(rloc+2, gloc-rloc-2);
-							std::cout << g << std::endl;
-							bloc = TempPix.find(",", gloc + 1);
-							b = TempPix.substr(bloc, bloc-gloc);
-							std::cout << b << " " << gloc << " " << rloc << " " << bloc << std::endl;
+							r = TempPix.substr(0, Main::nthOccurrence(TempPix, ",", 1));
+							g = TempPix.substr(Main::nthOccurrence(TempPix, ",", 1)+2, Main::nthOccurrence(TempPix, ",", 2)- Main::nthOccurrence(TempPix, ",", 1)-2);
+							b = TempPix.substr(Main::nthOccurrence(TempPix, ",", 2) + 2, Main::nthOccurrence(TempPix, ",", 3) - Main::nthOccurrence(TempPix, ",", 2) - 2);
+							a = TempPix.substr(Main::nthOccurrence(TempPix, ",", 3) + 2, Main::nthOccurrence(TempPix, ",", 4) - Main::nthOccurrence(TempPix, ",", 3) - 2);
+							std::cout << r  << std::endl << g << std::endl << b << std::endl << a << std::endl;
 						} 
 
 					}
@@ -112,3 +107,21 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
+
+//Finds nth occurrence of char in string. I tried doing it myself but after too long I decided to borrow some code from jv74 on stackexchange https://stackoverflow.com/a/37327537
+int Main::nthOccurrence(const std::string& str, const std::string& findMe, int nth)
+{
+	size_t  pos = 0;
+	int     cnt = 0;
+
+	while (cnt != nth)
+	{
+		pos += 1;
+		pos = str.find(findMe, pos);
+		if (pos == std::string::npos)
+			return -1;
+		cnt++;
+	}
+	return pos;
+}
+
