@@ -38,13 +38,41 @@ int main(int argc, char* argv[]) {
 				}
 
 
-				//Find the size of the image
-				if (ActiveHRI.find("!{") != std::string::npos) {
-					std::string Tempsize = ActiveHRI.substr(ActiveHRI.find("!{")+2, ActiveHRI.find("}")-2);
+				
+
+				std::size_t OpLoc = -1;
+				std::size_t CpLoc = -1;
+				if (SizeX != NULL && SizeY != NULL) {
+					for (int i2 = 0; i2 < std::count(ActiveHRI.begin(), ActiveHRI.end(), '{'); i2++) {
+						
+						OpLoc = ActiveHRI.find("{", OpLoc + 1, 1);
+						CpLoc = ActiveHRI.find("}", CpLoc+1, 1);
+						std::string TempPix = ActiveHRI.substr(OpLoc+1, CpLoc-OpLoc-1);
+						std::cout << TempPix << " " << std::endl;
+
+						if (ctype == ColourType::RGB) {
+							std::string r, g, b, a;
+							int rloc, gloc, bloc, aloc;
+							rloc = TempPix.find(",");
+							r = TempPix.substr(0, rloc);
+							std::cout << r << std::endl;
+							gloc = TempPix.find(",", rloc + 1);
+							g = TempPix.substr(rloc+2, gloc-rloc-2);
+							std::cout << g << std::endl;
+							bloc = TempPix.find(",", gloc + 1);
+							b = TempPix.substr(bloc, bloc-gloc);
+							std::cout << b << " " << gloc << " " << rloc << " " << bloc << std::endl;
+						} 
+
+					}
+				}
+			//Find the size of the image
+			if (ActiveHRI.find("!{") != std::string::npos) {
+					std::string Tempsize = ActiveHRI.substr(ActiveHRI.find("!{") + 2, ActiveHRI.find("}") - 2);
 					std::cout << Tempsize << std::endl;
 					std::string tempSizeX = Tempsize.substr(0, Tempsize.find(","));
 					std::cout << tempSizeX << "\n";
-					std::string tempSizeY = Tempsize.substr(Tempsize.find(",")+2);
+					std::string tempSizeY = Tempsize.substr(Tempsize.find(",") + 2);
 					std::cout << tempSizeY << "\n";
 					try {
 						SizeX = std::stoi(tempSizeX);
@@ -52,18 +80,6 @@ int main(int argc, char* argv[]) {
 					}
 					catch (...) {
 						std::cout << "FATAL ERROR: Found a non-number in the size definition! \n";
-					}
-				}
-
-				int OpLoc = -1;
-				int CpLoc = -1;
-				if (SizeX != NULL || SizeY != NULL) {
-					for (int i2 = 0; i2 < std::count(ActiveHRI.begin(), ActiveHRI.end(), '{'); i2++) {
-						
-						OpLoc = ActiveHRI.find("{", i2);
-						CpLoc = ActiveHRI.find("}", i2);
-						std::string TempPix = ActiveHRI.substr(OpLoc, CpLoc+1);
-						std::cout << TempPix << " " << CpLoc << std::endl;
 					}
 				}
 		
