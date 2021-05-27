@@ -57,6 +57,21 @@ int main(int argc, char* argv[]) {
 							b = TempPix.substr(Main::nthOccurrence(TempPix, ",", 2) + 2, Main::nthOccurrence(TempPix, ",", 3) - Main::nthOccurrence(TempPix, ",", 2) - 2);
 							a = TempPix.substr(Main::nthOccurrence(TempPix, ",", 3) + 2, Main::nthOccurrence(TempPix, ",", 4) - Main::nthOccurrence(TempPix, ",", 3) - 2);
 							std::cout << r  << std::endl << g << std::endl << b << std::endl << a << std::endl;
+							int nr;
+							int ng;
+							int nb;
+							int na;
+							try {
+								nr = std::stoi(r);
+								ng = std::stoi(g);
+								nb = std::stoi(b);
+								na = std::stoi(a);
+							}
+							catch (...) {
+								std::cout << "FATAL ERROR: Non-number found in pixels! Exiting Program... \n";
+								return 0;
+							}
+							std::cout << Main::RGBtoHex(nr, ng, nb, na) << std::endl;
 						} 
 
 					}
@@ -123,5 +138,13 @@ int Main::nthOccurrence(const std::string& str, const std::string& findMe, int n
 		cnt++;
 	}
 	return pos;
+}
+
+std::string Main::RGBtoHex(int r, int g, int b, int a) {
+	std::stringstream ss;
+
+	ss << std::hex << (r) << std::hex << ( g);
+
+	return ss.str();
 }
 

@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <sstream>
 
 #include "ColourType.h"
 
@@ -18,5 +19,7 @@ class Main
 {
 public:
 	static int nthOccurrence(const std::string& str, const std::string& findMe, int nth);
+
+	static std::string RGBtoHex(int r, int g, int b, int a);
 };
 
