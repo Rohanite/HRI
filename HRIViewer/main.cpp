@@ -39,7 +39,7 @@ int main(int argc, char* argv[]) {
 
 
 				
-
+				//Read pixels
 				std::size_t OpLoc = -1;
 				std::size_t CpLoc = -1;
 				if (SizeX != NULL && SizeY != NULL) {
@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
 						CpLoc = ActiveHRI.find("}", CpLoc+1, 1);
 						std::string TempPix = ActiveHRI.substr(OpLoc+1, CpLoc-OpLoc-1);
 						std::cout << TempPix << " " << std::endl;
-
+						//read RGB pixels
 						if (ctype == ColourType::RGB) {
 							std::string r, g, b, a;
 							r = TempPix.substr(0, Main::nthOccurrence(TempPix, ",", 1));
@@ -71,10 +71,33 @@ int main(int argc, char* argv[]) {
 								std::cout << "FATAL ERROR: Non-number found in pixels! Exiting Program... \n";
 								return 0;
 							}
-							std::cout << Main::RGBtoHex(nr, ng, nb, na) << std::endl;
-						} 
+							int finalpix;
+							try {
+								finalpix = std::stoi(Main::RGBtoHex(nr, ng, nb, na));
+							}
+							catch (...) {
+								std::cout << "FATAL ERROR: RGB to hex conversion failed! Exiting Program... \n";
+								return 0;
+							}
+							std::cout << finalpix << std::endl;
+							pixels.push_back(finalpix);
+							
+						}
+
+						if (ctype == ColourType::HEX) {
+							int finalpix = 0;
+
+							try {
+								finalpix = std::stoi(TempPix, (size_t*)nullptr, 16);
+							}
+							catch (...) {
+								"FATAL ERROR: Invalid char found in pixels! Exiting Program... \n";
+							}
+							std::cout << finalpix << "\n";
+						}
 
 					}
+					std::cout << "Number of pixels are: " << pixels.size() << "Ending file reading!" << std::endl;
 				}
 			//Find the size of the image
 			if (ActiveHRI.find("!{") != std::string::npos) {
@@ -143,7 +166,22 @@ int Main::nthOccurrence(const std::string& str, const std::string& findMe, int n
 std::string Main::RGBtoHex(int r, int g, int b, int a) {
 	std::stringstream ss;
 
-	ss << std::hex << (r) << std::hex << ( g);
+	ss << std::hex << r;
+	if (ss.str().length() != 2) {
+		ss << "0";
+	}
+	ss << std::hex << g;
+	if (ss.str().length() != 4) {
+		ss << "0";
+	}
+	ss << std::hex << b;
+	if (ss.str().length() != 6) {
+		ss << "0";
+	}
+	ss << std::hex << a;
+	if (ss.str().length() != 8) {
+		ss << "0";
+	}
 
 	return ss.str();
 }
