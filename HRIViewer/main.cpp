@@ -73,13 +73,13 @@ int main(int argc, char* argv[]) {
 							}
 							int finalpix;
 							try {
-								finalpix = std::stoi(Main::RGBtoHex(nr, ng, nb, na));
+								finalpix = std::stoul(Main::RGBtoHex(nr, ng, nb, na), nullptr, 16);
 							}
 							catch (...) {
 								std::cout << "FATAL ERROR: RGB to hex conversion failed! Exiting Program... \n";
 								return 0;
 							}
-							std::cout << finalpix << std::endl;
+							std::cout << std::hex << finalpix << std::endl;
 							pixels.push_back(finalpix);
 							
 						}
@@ -88,16 +88,17 @@ int main(int argc, char* argv[]) {
 							int finalpix = 0;
 
 							try {
-								finalpix = std::stoi(TempPix, (size_t*)nullptr, 16);
+								finalpix = std::stoul(TempPix, nullptr, 16);
 							}
 							catch (...) {
 								"FATAL ERROR: Invalid char found in pixels! Exiting Program... \n";
 							}
-							std::cout << finalpix << "\n";
+							std::cout << std::hex << finalpix << "\n";
+							pixels.push_back(finalpix);
 						}
 
 					}
-					std::cout << "Number of pixels are: " << pixels.size() << "Ending file reading!" << std::endl;
+					
 				}
 			//Find the size of the image
 			if (ActiveHRI.find("!{") != std::string::npos) {
@@ -136,11 +137,25 @@ int main(int argc, char* argv[]) {
 
 		
 	}
+	std::cout << "Number of pixels are: " << pixels.size() << ". Ending file reading!" << std::endl;
 
 	HRIimg.close();
+	const int WondowSizeX = 800, WindowSizeY = 700;
+	InitWindow(WondowSizeX, WindowSizeY, "Human Readable Image Viewer");
+	while (!WindowShouldClose()) {
+		BeginDrawing();
+		ClearBackground(BLACK);
+		int pixelsize = WindowSizeY / pixels.size();
+		for (int i = 0; i < SizeY; i++) {
+			for (int i2 = 0; i2 < SizeX; i2++) {
+				DrawRectangle(i2* pixelsize, i* pixelsize, pixelsize, pixelsize, GetColor(pixels[i2+1*i]));
+				
 
-	//Pause command REMEMBER TO DELETE when window is integrated
-	std::cin.get();
+			}
+		}
+		EndDrawing();
+	}
+	CloseWindow();
 	
 
 	return 0;
