@@ -140,19 +140,26 @@ int main(int argc, char* argv[]) {
 	std::cout << "Number of pixels are: " << pixels.size() << ". Ending file reading!" << std::endl;
 
 	HRIimg.close();
-	const int WondowSizeX = 800, WindowSizeY = 700;
-	InitWindow(WondowSizeX, WindowSizeY, "Human Readable Image Viewer");
+	const int WindowSizeX = 800, WindowSizeY = 700;
+	InitWindow(WindowSizeX, WindowSizeY, "Human Readable Image Viewer");
 	while (!WindowShouldClose()) {
 		BeginDrawing();
-		ClearBackground(BLACK);
+		ClearBackground(GRAY);
 		int pixelsize = WindowSizeY / pixels.size();
+		int offsetX = WindowSizeX / 2 - pixelsize*SizeX/2;
+		int offsetY = WindowSizeY / 2 - pixelsize*SizeY/2;
+		int pixnum = 0;
 		for (int i = 0; i < SizeY; i++) {
 			for (int i2 = 0; i2 < SizeX; i2++) {
-				DrawRectangle(i2* pixelsize, i* pixelsize, pixelsize, pixelsize, GetColor(pixels[i2+1*i]));
-				
+				DrawRectangle(i2* pixelsize + offsetX, i* pixelsize + offsetY, pixelsize, pixelsize, GetColor(pixels[pixnum]));
+				pixnum++;
 
 			}
 		}
+		DrawRectangle(offsetX, offsetY-10, SizeX*pixelsize, 10, WHITE);
+		DrawRectangle(offsetX, SizeY*pixelsize+offsetY, SizeX* pixelsize, 10, WHITE);
+		DrawRectangle(offsetX-10, offsetY-10, 10, SizeY* pixelsize+20, WHITE);
+		DrawRectangle(SizeX* pixelsize + offsetX, offsetY-10,  10, SizeY* pixelsize+20, WHITE);
 		EndDrawing();
 	}
 	CloseWindow();
@@ -200,4 +207,3 @@ std::string Main::RGBtoHex(int r, int g, int b, int a) {
 
 	return ss.str();
 }
-
