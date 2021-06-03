@@ -8,6 +8,7 @@ int main(int argc, char* argv[]) {
 
 
 	if (HRIimg.is_open()) {
+		//read individual lines
 		while (std::getline(HRIimg, line))
 		{
 			HRI.push_back(line);
@@ -84,6 +85,7 @@ int main(int argc, char* argv[]) {
 							
 						}
 
+						//read hex pixel
 						if (ctype == ColourType::HEX) {
 							int finalpix = 0;
 
@@ -139,27 +141,46 @@ int main(int argc, char* argv[]) {
 	}
 	std::cout << "Number of pixels are: " << pixels.size() << ". Ending file reading!" << std::endl;
 
+	if (pixels.size() < SizeX * SizeY) {
+		std::cout << "FATAL ERROR: Less pixels then stated! Closing Program..." << std::endl;
+		return 0;
+	}
+	else if (pixels.size() > SizeX * SizeY) {
+		std::cout << "WARNING: More pixels then stated! Not all pixels with defined colours will be displayed!" << std::endl;
+	}
+
 	HRIimg.close();
-	const int WindowSizeX = 800, WindowSizeY = 700;
+
+	//create window
+	const int WindowSizeX = 1000, WindowSizeY = 1000;
 	InitWindow(WindowSizeX, WindowSizeY, "Human Readable Image Viewer");
 	while (!WindowShouldClose()) {
 		BeginDrawing();
 		ClearBackground(GRAY);
-		int pixelsize = WindowSizeY / pixels.size();
-		int offsetX = WindowSizeX / 2 - pixelsize*SizeX/2;
-		int offsetY = WindowSizeY / 2 - pixelsize*SizeY/2;
+		//draw pixels
+		int pixelsizeY = WindowSizeY/(SizeY*2);
+		int pixelsizeX = WindowSizeY / (SizeY * 2);
+		if (SizeX == SizeY) {
+			pixelsizeX = pixelsizeX * 1.5;
+			pixelsizeY = pixelsizeY * 1.5;
+		}
+		int offsetX = WindowSizeX / 2 - pixelsizeX*SizeX/2;
+		int offsetY = WindowSizeY / 2 - pixelsizeY*SizeY/2;
 		int pixnum = 0;
+		
 		for (int i = 0; i < SizeY; i++) {
 			for (int i2 = 0; i2 < SizeX; i2++) {
-				DrawRectangle(i2* pixelsize + offsetX, i* pixelsize + offsetY, pixelsize, pixelsize, GetColor(pixels[pixnum]));
+				DrawRectangle(i2* pixelsizeX + offsetX, i* pixelsizeY + offsetY, pixelsizeX, pixelsizeY, GetColor(pixels[pixnum]));
 				pixnum++;
 
 			}
 		}
-		DrawRectangle(offsetX, offsetY-10, SizeX*pixelsize, 10, WHITE);
-		DrawRectangle(offsetX, SizeY*pixelsize+offsetY, SizeX* pixelsize, 10, WHITE);
-		DrawRectangle(offsetX-10, offsetY-10, 10, SizeY* pixelsize+20, WHITE);
-		DrawRectangle(SizeX* pixelsize + offsetX, offsetY-10,  10, SizeY* pixelsize+20, WHITE);
+
+		//draw barrier
+		DrawRectangle(offsetX, offsetY-10, SizeX*pixelsizeX, 10, WHITE);
+		DrawRectangle(offsetX, SizeY*pixelsizeY+offsetY, SizeX* pixelsizeX, 10, WHITE);
+		DrawRectangle(offsetX-10, offsetY-10, 10, SizeY* pixelsizeY+20, WHITE);
+		DrawRectangle(SizeX* pixelsizeX + offsetX, offsetY-10,  10, SizeY* pixelsizeY+20, WHITE);
 		EndDrawing();
 	}
 	CloseWindow();
@@ -185,6 +206,7 @@ int Main::nthOccurrence(const std::string& str, const std::string& findMe, int n
 	return pos;
 }
 
+//Turn RGB pixels into hex pixels
 std::string Main::RGBtoHex(int r, int g, int b, int a) {
 	std::stringstream ss;
 
