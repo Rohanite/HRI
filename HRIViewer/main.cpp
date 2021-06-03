@@ -1,6 +1,10 @@
 #include "main.h"
 
 int main(int argc, char* argv[]) {
+	if (argv[1] == NULL) {
+		std::cout << "FATAL ERROR: No file given! Ending Program..." << std::endl;
+		return 0;
+	}
 	std::cout << argv[1] << std::endl;
 	std::string line;
 	std::ifstream HRIimg (argv[1], std::ios::out);;
