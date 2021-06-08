@@ -97,7 +97,7 @@ int main(int argc, char* argv[]) {
 								finalpix = std::stoul(TempPix, nullptr, 16);
 							}
 							catch (...) {
-								"FATAL ERROR: Invalid char found in pixels! Exiting Program... \n";
+								std::cout << "FATAL ERROR: Invalid char found in pixels! Exiting Program... \n";
 							}
 							std::cout << std::hex << finalpix << "\n";
 							pixels.push_back(finalpix);
