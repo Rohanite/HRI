@@ -36,7 +36,7 @@ if (HRIimg.is_open()) {
 		}
 		isHRI = true;
 	}
-	else {
+	else if (isHRI == false){
 		return 1;
 	}
 

@@ -5,7 +5,15 @@ int main(int argc, char* argv[]) {
 		std::cout << "FATAL ERROR: No file given! Ending Program..." << std::endl;
 		return 0;
 	}
-	bool initSuccess = Image.Init(argv[1]);
+	bool debug = false;
+	
+	if (argv[2] != NULL) {
+		if (std::strcmp(argv[2], "-d") == 0) {
+			debug = true;
+			std::cout << "Debug True" << std::endl;
+		}
+	}
+	bool initSuccess = Image.Init(argv[1], debug);
 	if (initSuccess == 0) {
 		
 		int SizeX = Image.getSizeX();
@@ -46,32 +54,42 @@ int main(int argc, char* argv[]) {
 	}
 	else if (initSuccess == 1) {
 		std::cout << "FATAL ERROR: File is not HRI! Ending program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess == 2) {
 		std::cout << "FATAL ERROR: Non-number found in pixels! Exiting Program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess == 3) {
 		std::cout << "FATAL ERROR: RGB to hex conversion failed! Exiting Program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess == 4) {
 		std::cout << "FATAL ERROR: Invalid char found in pixels! Exiting Program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess == 5) {
 		std::cout << "FATAL ERROR: Found a non-number in the size definition! Exiting Program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess == 6) {
 		std::cout << "FATAL ERROR: Size not defined! Exiting Program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess == 7) {
 		std::cout << "FATAL ERROR: Image is too large! Max Dimensions are 300x300! Exiting Program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess == 8) {
 		std::cout << "FATAL ERROR: No ColouType Defined! Exiting Program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess == 9) {
 		std::cout << "FATAL ERROR: Less pixels then stated! Closing Program..." << std::endl;
+		std::cin;
 	}
 	else if (initSuccess >= 10) {
 		std::cout << "FATAL ERROR: UNDEFINED! If this error persists and the build you are using was pre-built then please lodge an issue at https://github.com/Rohanite/HRI/issues! Exiting Program...";
+		std::cin;
 	}
 }
