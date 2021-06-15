@@ -13,15 +13,21 @@
 
 struct HRI
 {
-
-	static int Init(std::string file, bool debug = false);
-	static std::vector<int> getPixels();
-	static int getSizeX();
-	static int getSizeY();
-	static ColourType getColourType();
-
+	HRI();
+	HRI(std::string fileName) {
+		file = fileName;
+	};
+	int Read(bool debug = false);
+	void newFile(std::string fileName, ColourType Colour, int xSize, int ySize);
+	void WritePixel(int xpos, int ypos, int Colour);
+	std::vector<int> getPixels();
+	int getSizeX();
+	int getSizeY();
+	ColourType getColourType();
 	
-
+	
+private:
+	std::string file = "";
 	
 };
 

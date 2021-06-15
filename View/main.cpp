@@ -1,19 +1,22 @@
 #include "main.h"
 
 int main(int argc, char* argv[]) {
+	
 	if (argv[1] == NULL) {
 		std::cout << "FATAL ERROR: No file given! Ending Program..." << std::endl;
 		return 0;
 	}
 	bool debug = false;
 	
+	HRI Image(argv[1]);
+
 	if (argv[2] != NULL) {
 		if (std::strcmp(argv[2], "-d") == 0) {
 			debug = true;
 			std::cout << "Debug True" << std::endl;
 		}
 	}
-	bool initSuccess = Image.Init(argv[1], debug);
+	bool initSuccess = Image.Read(debug);
 	if (initSuccess == 0) {
 		
 		int SizeX = Image.getSizeX();
@@ -52,7 +55,7 @@ int main(int argc, char* argv[]) {
 		}
 		CloseWindow();
 	}
-	else if (initSuccess == 1) {
+	else if (initSuccess == 0) {
 		std::cout << "FATAL ERROR: File is not HRI! Ending program..." << std::endl;
 		std::cin;
 	}

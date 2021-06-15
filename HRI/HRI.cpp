@@ -1,8 +1,6 @@
 // HRI.cpp : Defines the functions for the static library.
 //
 
-#include "pch.h"
-#include "framework.h"
 #include "HRI.h"
 
 static bool isHRI = false;
@@ -11,7 +9,7 @@ static int SizeX = NULL, SizeY = NULL;
 static std::vector<int> pixels;
 
 // TODO: This is an example of a library function
-int HRI::Init(std::string file, bool debug) {
+int HRI::Read(bool debug) {
 	if (debug) {
 		std::cout << file << std::endl;
 	}
