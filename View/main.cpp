@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
 			std::cout << "Debug True" << std::endl;
 		}
 	}
-	bool initSuccess = Image.Read(debug);
+	int initSuccess = Image.Read(debug);
 	if (initSuccess == 0) {
 		
 		int SizeX = Image.getSizeX();
