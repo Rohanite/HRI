@@ -28,7 +28,8 @@ struct HRI
 	
 private:
 	std::string file = "";
-	
+	bool dbg = false;
+	std::vector<std::string> HRIU;
 };
 
 class HRISys {

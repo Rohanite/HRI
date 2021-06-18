@@ -12,23 +12,24 @@ static std::vector<int> pixels;
 int HRI::Read(bool debug) {
 	if (debug) {
 		std::cout << file << std::endl;
+		dbg = true;
 	}
 std::string line;
 std::ifstream HRIimg(file, std::ios::out);;
-std::vector<std::string> HRI;
+
 
 
 if (HRIimg.is_open()) {
 	//read individual lines
 	while (std::getline(HRIimg, line))
 	{
-		HRI.push_back(line);
+		HRIU.push_back(line);
 		if (debug) {
 			std::cout << line << '\n';
 		}
 	}
 
-	if (HRI[0].substr(0, 4) == "#HRI") {
+	if (HRIU[0].substr(0, 4) == "#HRI") {
 		if (debug) {
 			std::cout << "File is HRI \n";
 		}
@@ -40,9 +41,9 @@ if (HRIimg.is_open()) {
 
 	if (isHRI) {
 
-		for (int i = 0; i < HRI.size(); i++) {
+		for (int i = 0; i < HRIU.size(); i++) {
 
-			std::string ActiveHRI = HRI[i];
+			std::string ActiveHRI = HRIU[i];
 
 			// Test if pixels are in RGB or Hex format
 			if (ActiveHRI.find("!rgb") != std::string::npos) {
@@ -200,6 +201,23 @@ int HRI::getSizeY() {
 ColourType HRI::getColourType() {
 	return ctype;
 }
+
+void HRI::WritePixel(int xpos, int ypos, int Colour) {
+	std::string newPix("{" + Colour +'}');
+	if (dbg) {
+		std::cout << newPix << std::endl;
+	}
+	if (ypos > SizeY || xpos > SizeX) {
+		std::cout << "ERROR WRITING PIXEL: PIXEL CO-ORDINATES GIVEN ARE OVER THE SIZE OF THE IMAGE!" << std::endl;
+		return;
+	}
+
+}
+
+void HRI::newFile(std::string fileName, ColourType Colour, int xSize, int ySize) {
+
+}
+
 
 //Finds nth occurrence of char in string. I tried doing it myself but after too long I decided to borrow some code from jv74 on stackexchange https://stackoverflow.com/a/37327537
 int HRISys::nthOccurrence(const std::string& str, const std::string& findMe, int nth)
