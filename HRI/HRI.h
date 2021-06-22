@@ -6,7 +6,6 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
-
 #include "ColourType.h"
 
 
@@ -24,7 +23,7 @@ struct HRI
 	int getSizeX();
 	int getSizeY();
 	ColourType getColourType();
-	
+	void save();
 	
 private:
 	std::string file = "";

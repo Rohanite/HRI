@@ -202,7 +202,8 @@ ColourType HRI::getColourType() {
 	return ctype;
 }
 
-void HRI::WritePixel(int xpos, int ypos, int Colour) {
+void HRI::WritePixel(int xpos, int ypos, int Colour) 
+{
 	std::string newPix("{" + Colour +'}');
 	if (dbg) {
 		std::cout << newPix << std::endl;
@@ -211,7 +212,37 @@ void HRI::WritePixel(int xpos, int ypos, int Colour) {
 		std::cout << "ERROR WRITING PIXEL: PIXEL CO-ORDINATES GIVEN ARE OVER THE SIZE OF THE IMAGE!" << std::endl;
 		return;
 	}
+	if (sizeof(Colour) != 8) {
+		std::cout << "ERROR WRITING PIXEL: PIXEL COLOUR IS TOO LARGE/SMALL!" << std::endl;
+		return;
+	}
+	int pixnum = xpos * ypos;
+	if (pixels.size() < pixnum) {
+		for (int i; i == pixnum-1; i++) {
+			pixels.push_back(00000000);
+		}
+	}
+	if (pixels.size() == pixnum - 1) {
+		pixels.push_back(Colour);
+	}
+	else if (pixels.size() >= pixnum) {
+		pixels[pixnum] = Colour;
+	}
+	
 
+}
+
+void HRI::save()
+{
+	std::ofstream saveFile;
+	saveFile.open(file, std::ios::out | std::ios::trunc | std::ios::binary);
+
+	if (!saveFile.is_open()) {
+		std::cout << "ERROR SAVING FILE: COULD NOT OPEN FILE!" << std::endl;
+		return;
+	}
+
+	
 }
 
 void HRI::newFile(std::string fileName, ColourType Colour, int xSize, int ySize) {
