@@ -6,7 +6,7 @@
 static bool isHRI = false;
 static ColourType ctype = ColourType::NON;
 static int SizeX = NULL, SizeY = NULL;
-static std::vector<int> pixels;
+static std::vector<std::int64_t> pixels;
 
 // TODO: This is an example of a library function
 int HRI::Read(bool debug) {
@@ -182,11 +182,12 @@ else if (pixels.size() > SizeX * SizeY) {
 
 HRIimg.close();
 
+basePixels = pixels;
 
 return 0;
 }
 
-std::vector<int> HRI::getPixels() {
+std::vector<std::int64_t> HRI::getPixels() {
 	return pixels;
 }
 
@@ -202,23 +203,30 @@ ColourType HRI::getColourType() {
 	return ctype;
 }
 
-void HRI::WritePixel(int xpos, int ypos, int Colour) 
+void HRI::WritePixel(int xpos, int ypos, std::int64_t Colour, bool hasHead)
 {
 	std::string newPix("{" + Colour +'}');
 	if (dbg) {
-		std::cout << newPix << std::endl;
+		std::cout << "Pixel being written " << newPix << std::endl;
 	}
+	
 	if (ypos > SizeY || xpos > SizeX) {
 		std::cout << "ERROR WRITING PIXEL: PIXEL CO-ORDINATES GIVEN ARE OVER THE SIZE OF THE IMAGE!" << std::endl;
 		return;
 	}
-	if (sizeof(Colour) != 8) {
+	if (hasHead) {
+		if (sizeof(Colour) != 10) {
+			std::cout << "ERROR WRITING PIXEL: PIXEL COLOUR IS TOO LARGE/SMALL!" << std::endl;
+			return;
+		}
+	}
+	else if (sizeof(Colour) != 8) {
 		std::cout << "ERROR WRITING PIXEL: PIXEL COLOUR IS TOO LARGE/SMALL!" << std::endl;
 		return;
 	}
 	int pixnum = xpos * ypos;
 	if (pixels.size() < pixnum) {
-		for (int i; i == pixnum-1; i++) {
+		for (int i = 0; i < pixnum-1; i++) {
 			pixels.push_back(00000000);
 		}
 	}
@@ -234,15 +242,30 @@ void HRI::WritePixel(int xpos, int ypos, int Colour)
 
 void HRI::save()
 {
-	std::ofstream saveFile;
-	saveFile.open(file, std::ios::out | std::ios::trunc | std::ios::binary);
+	std::fstream saveFile;
+	saveFile.open(file, std::ios::out | std::ios::in | std::ios::trunc | std::ios::binary);
 
 	if (!saveFile.is_open()) {
 		std::cout << "ERROR SAVING FILE: COULD NOT OPEN FILE!" << std::endl;
 		return;
 	}
-
 	
+	for (int i = 0; i < sizeof(pixels) - sizeof(basePixels); i++) {
+		saveFile << pixels[sizeof(basePixels)+i];
+	}
+
+	std::string line;
+	std::vector<std::string> sfFull;
+
+	while (std::getline(saveFile, line))
+	{
+		sfFull.push_back(line);
+		if (dbg) {
+			std::cout << line << '\n';
+		}
+	}
+	
+	saveFile.close();
 }
 
 void HRI::newFile(std::string fileName, ColourType Colour, int xSize, int ySize) {

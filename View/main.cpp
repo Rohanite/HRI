@@ -17,11 +17,17 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	int initSuccess = Image.Read(debug);
+	if (debug == true) {
+		std::cout << "Writing Pixel! \n";
+		Image.WritePixel(3, 2, 0xFFFFFFFF);
+		Image.save();
+	}
+	initSuccess = Image.Read(debug);
 	if (initSuccess == 0) {
-		
+
 		int SizeX = Image.getSizeX();
 		int SizeY = Image.getSizeY();
-		std::vector<int> pixels = Image.getPixels();
+		std::vector<std::int64_t> pixels = Image.getPixels();
 		const int WindowSizeX = 1000, WindowSizeY = 1000;
 		InitWindow(WindowSizeX, WindowSizeY, "View");
 		while (!WindowShouldClose()) {
@@ -54,6 +60,7 @@ int main(int argc, char* argv[]) {
 			EndDrawing();
 		}
 		CloseWindow();
+
 	}
 	else if (initSuccess == 0) {
 		std::cout << "FATAL ERROR: File is not HRI! Ending program..." << std::endl;

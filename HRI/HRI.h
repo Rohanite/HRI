@@ -18,8 +18,8 @@ struct HRI
 	};
 	int Read(bool debug = false);
 	void newFile(std::string fileName, ColourType Colour, int xSize, int ySize);
-	void WritePixel(int xpos, int ypos, int Colour);
-	std::vector<int> getPixels();
+	void WritePixel(int xpos, int ypos, std::int64_t Colour, bool hasHead = true);
+	std::vector<std::int64_t> getPixels();
 	int getSizeX();
 	int getSizeY();
 	ColourType getColourType();
@@ -29,6 +29,7 @@ private:
 	std::string file = "";
 	bool dbg = false;
 	std::vector<std::string> HRIU;
+	std::vector<std::int64_t> basePixels;
 };
 
 class HRISys {
