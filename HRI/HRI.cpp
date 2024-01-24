@@ -29,6 +29,10 @@ if (HRIimg.is_open()) {
 		}
 	}
 
+	if (HRIU.size() == 0) {
+		return 10;
+	}
+
 	if (HRIU[0].substr(0, 4) == "#HRI") {
 		if (debug) {
 			std::cout << "File is HRI \n";
@@ -157,9 +161,9 @@ if (HRIimg.is_open()) {
 		if (SizeX == NULL || SizeY == NULL) {
 			return 6;
 		}
-		if (SizeX > 300 || SizeY > 300) {
-			return 7;
-		}
+		//if (SizeX > 300 || SizeY > 300) {
+			//return 7;
+		//}
 		if (ctype == ColourType::NON) {
 			return 8;
 		}
@@ -205,17 +209,17 @@ ColourType HRI::getColourType() {
 
 void HRI::WritePixel(int xpos, int ypos, std::int64_t Colour, bool hasHead)
 {
-	std::string newPix("{" + Colour +'}');
+	/*std::string newPix = std::string("{" + Colour + '}');
 	if (dbg) {
 		std::cout << "Pixel being written " << newPix << std::endl;
-	}
+	}*/
 	
 	if (ypos > SizeY || xpos > SizeX) {
 		std::cout << "ERROR WRITING PIXEL: PIXEL CO-ORDINATES GIVEN ARE OVER THE SIZE OF THE IMAGE!" << std::endl;
 		return;
 	}
 	if (hasHead) {
-		if (sizeof(Colour) != 10) {
+		if (sizeof(Colour) != 8) {
 			std::cout << "ERROR WRITING PIXEL: PIXEL COLOUR IS TOO LARGE/SMALL!" << std::endl;
 			return;
 		}
@@ -224,19 +228,21 @@ void HRI::WritePixel(int xpos, int ypos, std::int64_t Colour, bool hasHead)
 		std::cout << "ERROR WRITING PIXEL: PIXEL COLOUR IS TOO LARGE/SMALL!" << std::endl;
 		return;
 	}
+
 	int pixnum = xpos * ypos;
 	if (pixels.size() < pixnum) {
 		for (int i = 0; i < pixnum-1; i++) {
 			pixels.push_back(00000000);
 		}
 	}
-	if (pixels.size() == pixnum - 1) {
+	if (pixels.size() == pixnum) {
 		pixels.push_back(Colour);
 	}
 	else if (pixels.size() >= pixnum) {
-		pixels[pixnum] = Colour;
+		pixels[pixnum-1] = Colour;
 	}
 	
+	return;
 
 }
 
@@ -249,22 +255,12 @@ void HRI::save()
 		std::cout << "ERROR SAVING FILE: COULD NOT OPEN FILE!" << std::endl;
 		return;
 	}
-	
-	for (int i = 0; i < sizeof(pixels) - sizeof(basePixels); i++) {
-		saveFile << pixels[sizeof(basePixels)+i];
+	saveFile << "#HRI \n!hex" << std::endl;
+	saveFile << "!{" << SizeX << ", " << SizeY << "}" << std::endl;
+	for (int i = 0; i < pixels.size(); i++) {
+		saveFile << "{" << std::setfill('0') << std::setw(8) << std::hex << (int)pixels[i] << "} ";
 	}
 
-	std::string line;
-	std::vector<std::string> sfFull;
-
-	while (std::getline(saveFile, line))
-	{
-		sfFull.push_back(line);
-		if (dbg) {
-			std::cout << line << '\n';
-		}
-	}
-	
 	saveFile.close();
 }
 

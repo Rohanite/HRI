@@ -130,10 +130,10 @@ int main(int argc, char* argv[]) {
 				std::cout << "FATAL ERROR: Size not defined! Exiting Program... \n";
 				return 0;
 			}
-			if (SizeX > 300 || SizeY > 300) {
-				std::cout << "FATAL ERROR: Image is too large! Max Dimensions are 300x300! Exiting Program... \n";
-				return 0;
-			}
+		//	if (SizeX > 300 || SizeY > 300) {
+			//	std::cout << "FATAL ERROR: Image is too large! Max Dimensions are 300x300! Exiting Program... \n";
+			//	return 0;
+			//}
 			if (ctype == ColourType::NON) {
 				std::cout << "FATAL ERROR: No ColouType Defined! Exiting Program... \n";
 				return 0;
@@ -157,14 +157,14 @@ int main(int argc, char* argv[]) {
 	HRIimg.close();
 
 	//create window
-	const int WindowSizeX = 1000, WindowSizeY = 1000;
+	const int WindowSizeX = 1080, WindowSizeY = 1080;
 	InitWindow(WindowSizeX, WindowSizeY, "Human Readable Image Viewer");
 	while (!WindowShouldClose()) {
 		BeginDrawing();
 		ClearBackground(GRAY);
 		//draw pixels
-		int pixelsizeY = WindowSizeY/(SizeY*2);
-		int pixelsizeX = WindowSizeY / (SizeY * 2);
+		int pixelsizeY = WindowSizeY/(SizeY);
+		int pixelsizeX = WindowSizeX / (SizeX);
 		if (SizeX == SizeY) {
 			pixelsizeX = pixelsizeX * 1.5;
 			pixelsizeY = pixelsizeY * 1.5;

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <iostream>
 #include <fstream>
 #include <ios>
@@ -6,6 +7,7 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <iomanip>
 #include "ColourType.h"
 
 
@@ -13,7 +15,7 @@
 struct HRI
 {
 	HRI();
-	HRI(std::string fileName) {
+	HRI(char* fileName) {
 		file = fileName;
 	};
 	int Read(bool debug = false);

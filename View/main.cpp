@@ -1,14 +1,14 @@
 #include "main.h"
 
 int main(int argc, char* argv[]) {
-	
+
 	if (argv[1] == NULL) {
 		std::cout << "FATAL ERROR: No file given! Ending Program..." << std::endl;
-		return 0;
+
 	}
 	bool debug = false;
 	
-	HRI Image(argv[1]);
+	HRI Image = HRI(argv[1]);
 
 	if (argv[2] != NULL) {
 		if (std::strcmp(argv[2], "-d") == 0) {
@@ -20,9 +20,10 @@ int main(int argc, char* argv[]) {
 	if (debug == true) {
 		std::cout << "Writing Pixel! \n";
 		Image.WritePixel(3, 2, 0xFFFFFFFF);
-		Image.save();
+		Image.WritePixel(1, 2, 0xFFAACCFF);
+	    Image.save();
 	}
-	initSuccess = Image.Read(debug);
+
 	if (initSuccess == 0) {
 
 		int SizeX = Image.getSizeX();
@@ -56,7 +57,7 @@ int main(int argc, char* argv[]) {
 			DrawRectangle(offsetX, offsetY - 10, SizeX * pixelsizeX, 10, WHITE);
 			DrawRectangle(offsetX, SizeY * pixelsizeY + offsetY, SizeX * pixelsizeX, 10, WHITE);
 			DrawRectangle(offsetX - 10, offsetY - 10, 10, SizeY * pixelsizeY + 20, WHITE);
-			DrawRectangle(SizeX * pixelsizeX + offsetX, offsetY - 10, 10, SizeY * pixelsizeY + 20, WHITE);
+			DrawRectangle(SizeX * pixelsizeX + offsetX, offsetY - 10, 10, SizeY * pixelsizeY + 20, WHITE); 
 			EndDrawing();
 		}
 		CloseWindow();
@@ -98,8 +99,14 @@ int main(int argc, char* argv[]) {
 		std::cout << "FATAL ERROR: Less pixels then stated! Closing Program..." << std::endl;
 		std::cin;
 	}
-	else if (initSuccess >= 10) {
+	else if (initSuccess == 10) {
+		std::cout << "FATAL ERROR: File is empty! Exiting Program...";
+		std::cin;
+	}
+	else if (initSuccess >= 11) {
 		std::cout << "FATAL ERROR: UNDEFINED! If this error persists and the build you are using was pre-built then please lodge an issue at https://github.com/Rohanite/HRI/issues! Exiting Program...";
 		std::cin;
 	}
+
+	return 0;
 }

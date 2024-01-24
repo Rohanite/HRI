@@ -1,6 +1,4 @@
-#HRI
+#HRI 
 !hex
 !{3, 2}
-
-{FF00FF00} {FFFFFFFF } {00000000 } {00FF00FF}
-{C39F1D5E} {EE336698}
+{ff00ff00} {ffaaccff} {00000000} {00ff00ff} {c39f1d5e} {ee336698} {ffffffff} 
