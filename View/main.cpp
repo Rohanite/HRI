@@ -30,7 +30,10 @@ int main(int argc, char* argv[]) {
 		int SizeY = Image.getSizeY();
 		std::vector<std::int64_t> pixels = Image.getPixels();
 		const int WindowSizeX = 1000, WindowSizeY = 1000;
+		SetConfigFlags(FLAG_VSYNC_HINT);
+		SetTargetFPS(60);
 		InitWindow(WindowSizeX, WindowSizeY, "View");
+		
 		while (!WindowShouldClose()) {
 			BeginDrawing();
 			ClearBackground(GRAY);
